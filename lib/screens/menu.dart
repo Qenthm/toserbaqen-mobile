@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:toserbamobile/widgets/left_drawer.dart';
-import 'package:toserbamobile/screens/moodentry_form.dart'; // Tetap menggunakan MoodEntryFormPage
+import 'package:toserbamobile/widgets/mood_card.dart'; // Tetap menggunakan MoodEntryFormPage
 
 class MyHomePage extends StatelessWidget {
   final String npm = '2306152216'; // NPM
@@ -9,9 +9,9 @@ class MyHomePage extends StatelessWidget {
   MyHomePage({super.key});
 
   final List<ItemHomepage> items = [
-    ItemHomepage("Lihat Produk", Icons.shopping_bag, Colors.green.shade300),
-    ItemHomepage("Tambah Produk", Icons.add_shopping_cart, Colors.orange.shade300),
-    ItemHomepage("Keluar", Icons.logout, Colors.red.shade300),
+    ItemHomepage("Lihat Produk", Icons.shopping_bag),
+    ItemHomepage("Tambah Produk", Icons.add_shopping_cart),
+    ItemHomepage("Logout", Icons.logout),
   ];
 
   @override
@@ -112,64 +112,3 @@ class InfoCard extends StatelessWidget {
   }
 }
 
-class ItemCard extends StatelessWidget {
-  final ItemHomepage item;
-
-  const ItemCard(this.item, {super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: item.color, // Warna sesuai item
-      borderRadius: BorderRadius.circular(12),
-      child: InkWell(
-        onTap: () {
-          if (item.name == "Tambah Produk") {
-            // Navigate ke form pembuatan produk
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const MoodEntryFormPage(), // Menggunakan form yang sesuai
-              ),
-            );
-          } else {
-            ScaffoldMessenger.of(context)
-              ..hideCurrentSnackBar()
-              ..showSnackBar(
-                SnackBar(content: Text("Kamu telah menekan tombol ${item.name}!"))
-              );
-          }
-        },
-        child: Container(
-          padding: const EdgeInsets.all(8),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  item.icon,
-                  color: Colors.white,
-                  size: 30.0,
-                ),
-                const Padding(padding: EdgeInsets.all(3)),
-                Text(
-                  item.name,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(color: Colors.white),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class ItemHomepage {
-  final String name;
-  final IconData icon;
-  final Color color; // Warna spesifik untuk setiap tombol
-
-  ItemHomepage(this.name, this.icon, this.color);
-}

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:toserbamobile/screens/menu.dart';
-import 'package:toserbamobile/screens/moodentry_form.dart'; // Import halaman MoodEntryFormPage
+import 'package:toserbamobile/screens/moodentry_form.dart';
+import 'package:toserbamobile/screens/list_moodentry.dart';
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
@@ -44,11 +45,10 @@ class LeftDrawer extends StatelessWidget {
             // Bagian redirection ke MyHomePage
             onTap: () {
               Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MyHomePage(),
-                ),
-              );
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MyHomePage(),
+                  ));
             },
           ),
           ListTile(
@@ -56,11 +56,21 @@ class LeftDrawer extends StatelessWidget {
             title: const Text('Tambah Produk'),
             // Bagian redirection ke MoodEntryFormPage
             onTap: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MoodEntryFormPage(),
+                  ));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.shopping_bag),
+            title: const Text('Daftar Produk'),
+            onTap: () {
+              // Route menu ke halaman daftar produk
               Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const MoodEntryFormPage(), // Tetap menggunakan nama kelas asli
-                ),
+                  context,
+                  MaterialPageRoute(builder: (context) => const MoodEntryPage()),
               );
             },
           ),

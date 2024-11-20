@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:toserbamobile/screens/moodentry_form.dart'; // Tetap mengacu ke MoodEntryFormPage
+import 'package:toserbamobile/screens/login.dart';
+import 'package:toserbamobile/screens/moodentry_form.dart'; 
+import 'package:toserbamobile/screens/list_moodentry.dart'; 
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 
 class ItemHomepage {
   final String name;
@@ -17,28 +21,60 @@ class ItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     return Material(
       // Menentukan warna latar belakang dari tema aplikasi.
       color: Theme.of(context).colorScheme.secondary,
       // Membuat sudut kartu melengkung.
       borderRadius: BorderRadius.circular(12),
+
       child: InkWell(
         // Aksi ketika kartu ditekan.
-        onTap: () {
+        onTap: () async {
           // Menampilkan pesan SnackBar saat kartu ditekan.
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
               SnackBar(content: Text("Kamu telah menekan tombol ${item.name}!")),
             );
+
           // Navigate ke route yang sesuai (tergantung jenis tombol)
           if (item.name == "Tambah Produk") {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const MoodEntryFormPage(), // Tetap menggunakan nama kelas asli
+                builder: (context) => MoodEntryFormPage(), // Tetap menggunakan nama file asli
               ),
             );
+          } else if (item.name == "Lihat Produk") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const MoodEntryPage(), // Tetap menggunakan nama file asli
+              ),
+            );
+          } else if (item.name == "Logout") {
+            final response = await request.logout(
+              "http://127.0.0.1:8000/auth/logout/"); // URL endpoint logout
+            String message = response["message"];
+            if (context.mounted) {
+              if (response['status']) {
+                String uname = response["username"];
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text("$message Sampai jumpa, $uname."),
+                ));
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(message),
+                  ),
+                );
+              }
+            }
           }
         },
         // Container untuk menyimpan Icon dan Text
