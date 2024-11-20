@@ -157,6 +157,113 @@ Implementasi pada proyek :
 - Navigasi maju menggunakan Navigator.push
 - Navigasi mundur menggunakan Navigator.pop:
 
+## Pertanyaan TI9
+
+### 1. Jelaskan mengapa kita perlu membuat model untuk melakukan pengambilan ataupun pengiriman data JSON? Apakah akan terjadi error jika kita tidak membuat model terlebih dahulu?
+**Pentingnya model:**
+- Model membantu mempermudah pengelolaan data JSON dengan memetakan struktur data dari server menjadi objek di Flutter.
+- Model menyediakan cara yang terstruktur untuk mengakses properti data, sehingga meminimalkan kesalahan dalam pengambilan atau pengiriman data.
+
+**Apa yang terjadi jika model tidak dibuat?**
+- Tidak akan terjadi error jika kita tidak membuat model, namun akan lebih sulit mengelola data karena kita harus memproses JSON secara manual.
+- Hal ini dapat mengakibatkan kode menjadi tidak rapi dan rentan terhadap kesalahan, terutama jika struktur JSON kompleks atau berubah.
+
+---
+
+### 2. Jelaskan fungsi dari library http yang sudah kamu implementasikan pada tugas ini.
+**Fungsi utama library `http`:**
+- Library `http` digunakan untuk melakukan komunikasi dengan server melalui protokol HTTP.
+- Dengan library ini, kita dapat melakukan berbagai operasi seperti:
+  - **GET**: Mengambil data dari server.
+  - **POST**: Mengirim data ke server.
+  - **DELETE**: Menghapus data pada server.
+
+**Implementasi pada proyek ini:**
+- Menggunakan **http.get** untuk mengambil data produk dari server.
+- Menggunakan **http.post** untuk mengirim data form produk ke server.
+
+---
+
+### 3. Jelaskan fungsi dari CookieRequest dan jelaskan mengapa instance CookieRequest perlu untuk dibagikan ke semua komponen di aplikasi Flutter.
+**Fungsi `CookieRequest`:**
+- **CookieRequest** adalah library untuk melakukan komunikasi HTTP yang dapat menyimpan cookie.
+- Cookie ini digunakan untuk autentikasi, sehingga aplikasi dapat mengelola sesi pengguna (login/logout) secara efisien.
+
+**Mengapa perlu dibagikan ke semua komponen?**
+- Instance `CookieRequest` digunakan untuk memastikan semua permintaan HTTP dalam aplikasi memiliki akses ke cookie sesi pengguna.
+- Dengan membagikan instance ini melalui `Provider`, kita dapat memastikan bahwa semua komponen aplikasi berbagi sesi yang sama tanpa perlu mengelola cookie secara manual di setiap komponen.
+
+---
+
+### 4. Jelaskan mekanisme pengiriman data mulai dari input hingga dapat ditampilkan pada Flutter.
+**Mekanisme pengiriman data:**
+1. **Input Data**:
+   - Pengguna memasukkan data melalui elemen input seperti `TextFormField` di Flutter.
+2. **Validasi**:
+   - Data divalidasi menggunakan properti `validator` untuk memastikan input sesuai.
+3. **Pengiriman ke Server**:
+   - Data dikirim ke server menggunakan **http.post** atau metode dari `CookieRequest`.
+   - Data dikonversi menjadi format JSON sebelum dikirim.
+4. **Penyimpanan di Server**:
+   - Server Django menerima data, memprosesnya, dan menyimpannya ke database.
+5. **Pengambilan Data**:
+   - Aplikasi Flutter menggunakan **http.get** untuk mengambil data yang disimpan di server.
+6. **Menampilkan di Flutter**:
+   - Data JSON yang diterima dari server dikonversi ke dalam model (misalnya, `ProductEntry`) dan ditampilkan pada widget seperti `ListView`.
+
+---
+
+### 5. Jelaskan mekanisme autentikasi dari login, register, hingga logout. Mulai dari input data akun pada Flutter ke Django hingga selesainya proses autentikasi oleh Django dan tampilnya menu pada Flutter.
+**Mekanisme Login:**
+1. **Input**:
+   - Pengguna memasukkan username dan password melalui form di Flutter.
+2. **Pengiriman Data**:
+   - Data dikirim ke server Django menggunakan **CookieRequest.post**.
+3. **Verifikasi di Django**:
+   - Django memeriksa kredensial pengguna.
+   - Jika berhasil, Django mengirimkan cookie sesi kembali ke Flutter.
+4. **Penyimpanan Cookie**:
+   - Flutter menyimpan cookie ini melalui `CookieRequest` untuk digunakan dalam permintaan selanjutnya.
+5. **Akses Menu**:
+   - Jika login berhasil, Flutter mengarahkan pengguna ke halaman utama.
+
+**Mekanisme Register:**
+1. **Input Data**:
+   - Pengguna mengisi form pendaftaran dengan username, email, dan password.
+2. **Pengiriman Data**:
+   - Data dikirim ke endpoint Django yang mengelola pendaftaran.
+3. **Proses di Django**:
+   - Django membuat akun baru jika data valid dan belum digunakan.
+
+**Mekanisme Logout:**
+1. **Permintaan Logout**:
+   - Flutter mengirimkan permintaan logout ke server Django.
+2. **Hapus Cookie**:
+   - Django menghapus sesi pengguna di server.
+3. **Navigasi ke Login**:
+   - Flutter menghapus cookie lokal dan mengarahkan pengguna kembali ke halaman login.
+
+---
+
+### 6. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step! (bukan hanya sekadar mengikuti tutorial).
+**Langkah Implementasi:**
+1. **Membuat Model**:
+   - Membuat model seperti `MoodEntry` untuk memetakan struktur data JSON.
+2. **Mengelola Login/Register**:
+   - Membuat halaman login dan register menggunakan `TextFormField` untuk input data.
+   - Menggunakan `CookieRequest` untuk mengirim data ke server.
+3. **Membuat Form Tambah Produk**:
+   - Membuat halaman form dengan validasi input menggunakan `validator`.
+4. **Mengatur Navigasi**:
+   - Menambahkan navigasi menggunakan `Navigator.push` untuk berpindah antar halaman.
+5. **Menampilkan Data Produk**:
+   - Menggunakan `FutureBuilder` untuk mengambil dan menampilkan data dari server dalam bentuk list menggunakan `ListView`.
+6. **Menyusun Tema Aplikasi**:
+   - Menentukan tema aplikasi di root menggunakan properti `theme` pada `MaterialApp`.
+7. **Logout**:
+   - Implementasi logout dengan menghapus sesi menggunakan `CookieRequest.logout`.
+
+---
 
 
 
